@@ -1,0 +1,4 @@
+C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\bin\Debug\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\bin\Debug\NBodyLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\obj\Debug\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\obj\Debug\NBodyLib.pdb
