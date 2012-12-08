@@ -131,36 +131,51 @@ namespace NBodyLib
 
             var N = state.N;
 
-            var leftMasses = new double[N];
+            double Mass = 0.0; 
+            for (int i = 0; i < N; i++) Mass += state.m(i);
+            Vector3 cog = new Vector3();
+            for (int i = 0; i < N; i++) cog += state.m(i) * state.r(i);
+            cog /= Mass;
 
-            leftMasses[0] = state.m(0);
-            for (int i = 1; i < N; i++)
-            {
-                leftMasses[i] = leftMasses[i - 1] + state.m(i);
-            }
-
-            var leftCenterOfGravity = new Vector3[N];
-
-            leftCenterOfGravity[0] = new Vector3();
-            for (int i = 1; i < N; i++)
-            {
-                var weightedSum =
-                    leftCenterOfGravity[i - 1] * leftMasses[i - 1]
-                    + state.r(i) * state.m(i);
-                var normedSum = weightedSum / leftMasses[i]; // since leftMasses[i] = leftMasses[i-1] + m[i]  
-                leftCenterOfGravity[i] = normedSum;
-            }
-
-            for (int i = 1; i < N; i++)
+            for (int i = 0; i < N; i++)
             {
                 Vector3 ri = state.r(i);
-                Vector3 ri_relative_to_cog = state.r(i) - leftCenterOfGravity[i];
+                Vector3 ri_relative_to_cog = state.r(i) - cog;
                 double R = ri_relative_to_cog.euklid_Norm();
-                epot += state.m(i) * leftMasses[i] / R;
+                epot += state.m(i) * (Mass - state.m(i)) / R;
             }
             epot *= -1.0 * state.G;
 
             return epot;
+
+
+            //var leftMasses = new double[N];
+
+            //leftMasses[0] = 0.0;
+            //var leftCenterOfGravity = new Vector3[N];
+            //leftCenterOfGravity[0] = new Vector3();
+            //for (int i = 1; i < N; i++)
+            //{
+            //    leftMasses[i] = leftMasses[i - 1] + state.m(i-1);
+            //    leftCenterOfGravity[i] = leftCenterOfGravity[i - 1] + (state.r(i-1) * state.m(i-1));
+            //}
+
+            //for (int i = 0; i < N; i++)
+            //{
+            //    leftCenterOfGravity[i] /= leftMasses[i];
+            //}
+
+
+            //for (int i = 1; i < N; i++)
+            //{
+            //    Vector3 ri = state.r(i);
+            //    Vector3 ri_relative_to_cog = state.r(i) - leftCenterOfGravity[i];
+            //    double R = ri_relative_to_cog.euklid_Norm();
+            //    epot += state.m(i) * leftMasses[i] / R;
+            //}
+            //epot *= -1.0 * state.G;
+
+            //return epot;
         }
     }
 

@@ -153,10 +153,10 @@ namespace NBodyLib
             var N = state.N;
             var deltaTimeHalf = deltaTime * 0.5;
             var lfState = state as LeapFrogState;
-
+            lfState = null;
             Vector3[] acceleration1;
 
-            if (state.currentTime == lfState.m_timeOfAccelerationCalculated && lfState.m_accelerations != null)
+            if (null != lfState && state.currentTime == lfState.m_timeOfAccelerationCalculated && lfState.m_accelerations != null)
                 acceleration1 = lfState.m_accelerations;
             else
                 acceleration1 = state.ComputeAccelerationVectorDirect();
@@ -180,8 +180,11 @@ namespace NBodyLib
 
             state.currentTime += deltaTime;
 
-            lfState.m_timeOfAccelerationCalculated = state.currentTime;
-            lfState.m_accelerations = acceleration2;
+            if (null != lfState)
+            {
+                lfState.m_timeOfAccelerationCalculated = state.currentTime;
+                lfState.m_accelerations = acceleration2;
+            }
         }
 
     }
