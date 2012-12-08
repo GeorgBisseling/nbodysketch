@@ -2,3 +2,8 @@ C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\bin\Re
 C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\bin\Release\NBodyLib.pdb
 C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\obj\Release\NBodyLib.dll
 C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\obj\Release\NBodyLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Release\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Release\NBodyLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Release\NBodyLib.csprojResolveAssemblyReference.cache
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Release\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Release\NBodyLib.pdb

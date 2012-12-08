@@ -77,7 +77,7 @@ namespace NBodyLib
 
         public EulerIntegrator(EulerState s)
         {
-            state = new EulerState(s);
+            state = s;
         }
 
         public double currentTMin { get { return state.currentTime; } }
@@ -109,6 +109,33 @@ namespace NBodyLib
 
     }
 
+    public class LeapFrogState : EulerState
+    {
+        internal double m_timeOfAccelerationCalculated;
+        internal Vector3[] m_accelerations;
+
+        public LeapFrogState(int n, double gravitationalConstant, double defaultMass)
+            : base(n, gravitationalConstant, defaultMass)
+        {
+
+        }
+
+        public LeapFrogState(EulerState state)
+            : base(state)
+        {
+            m_timeOfAccelerationCalculated = -1.0;
+            m_accelerations = null;
+        }
+
+        public LeapFrogState(LeapFrogState state)
+            : base(state)
+        {
+            m_timeOfAccelerationCalculated = state.m_timeOfAccelerationCalculated;
+            m_accelerations = state.m_accelerations;
+        }
+    }
+
+
     public class LeapFrogIntegrator : EulerIntegrator
     {
         public LeapFrogIntegrator()
@@ -116,18 +143,23 @@ namespace NBodyLib
             throw new NotImplementedException();
         }
 
-        public LeapFrogIntegrator(EulerState state) 
-            : base(state)
+        public LeapFrogIntegrator(LeapFrogState s) 
+            : base(s)
         {
-            
         }
 
         public override void Progress(double deltaTime)
         {
             var N = state.N;
             var deltaTimeHalf = deltaTime * 0.5;
+            var lfState = state as LeapFrogState;
 
-            var acceleration1 = state.ComputeAccelerationVectorDirect();
+            Vector3[] acceleration1;
+
+            if (state.currentTime == lfState.m_timeOfAccelerationCalculated && lfState.m_accelerations != null)
+                acceleration1 = lfState.m_accelerations;
+            else
+                acceleration1 = state.ComputeAccelerationVectorDirect();
 
             for (int i = 0; i < N; i++)
             {
@@ -146,8 +178,10 @@ namespace NBodyLib
                 state.velocity[i] += acceleration2[i] * deltaTimeHalf;
             }
 
-
             state.currentTime += deltaTime;
+
+            lfState.m_timeOfAccelerationCalculated = state.currentTime;
+            lfState.m_accelerations = acceleration2;
         }
 
     }

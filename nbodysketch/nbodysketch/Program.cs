@@ -20,7 +20,7 @@ namespace nbodysketch
             double G = 1.0;
             double mass = 1.0;
 
-            var startState = new EulerState(N, gravitationalConstant: G, defaultMass: mass);
+            var startState = new LeapFrogState(N, gravitationalConstant: G, defaultMass: mass);
 
             startState.position[0][0] = -1.0;
             startState.velocity[0][1] = -0.5;
