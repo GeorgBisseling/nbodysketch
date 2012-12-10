@@ -8,6 +8,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nbodysketch", "nbodysketch\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBodyLib", "NBodyLib\NBodyLib.csproj", "{DB2DC663-448C-418C-BAF0-AFFC2DB13208}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplePlayer", "SimplePlayer\SimplePlayer.csproj", "{16EBF69D-BCCD-45F7-AFA8-F35F26D68940}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DB2DC663-448C-418C-BAF0-AFFC2DB13208} = {DB2DC663-448C-418C-BAF0-AFFC2DB13208}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +27,10 @@ Global
 		{DB2DC663-448C-418C-BAF0-AFFC2DB13208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB2DC663-448C-418C-BAF0-AFFC2DB13208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB2DC663-448C-418C-BAF0-AFFC2DB13208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16EBF69D-BCCD-45F7-AFA8-F35F26D68940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16EBF69D-BCCD-45F7-AFA8-F35F26D68940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16EBF69D-BCCD-45F7-AFA8-F35F26D68940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16EBF69D-BCCD-45F7-AFA8-F35F26D68940}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

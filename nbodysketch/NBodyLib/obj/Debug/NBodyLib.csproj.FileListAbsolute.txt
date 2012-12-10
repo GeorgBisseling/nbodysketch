@@ -8,4 +8,3 @@ C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\N
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Debug\NBodyLib.pdb
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\NBodyLib.dll.CodeAnalysisLog.xml
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\NBodyLib.dll.lastcodeanalysissucceeded
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Debug\NBodyLib.csprojResolveAssemblyReference.cache

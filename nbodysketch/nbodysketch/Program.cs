@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 
 using NBodyLib;
 
@@ -17,11 +19,11 @@ namespace nbodysketch
         {
             //Vector3.Test();
 
-            int N = 5;
+            int N = 9;
             double G = 1.0;
             double mass = 1.0;
 
-            var startState = new LeapFrogState(N, gravitationalConstant: G, defaultMass: mass);
+            var startState = new EulerState(N, gravitationalConstant: G, defaultMass: mass);
 
             startState.position[0][0] = -1.0;
             startState.velocity[0][1] = -0.5;
@@ -31,14 +33,16 @@ namespace nbodysketch
 
             for (int particle = 2; particle < N; particle++)
             {
-                double angle = particle * 0.5*Math.PI/(N-1);
-                startState.position[particle] = new Vector3(2.0 * Math.Sin(angle), 2.0 * Math.Cos(angle), 0.0);
-                startState.mass[particle] = 0.001;
+                double angle = particle * 2.0 * Math.PI / (N - 2);
+                startState.position[particle] = new Vector3(0.25 * Math.Sin(angle), 0.25 * Math.Cos(angle), 0.0);
+                startState.velocity[particle] = new Vector3(0.11 * Math.Cos(angle), 0.11 * -Math.Sin(angle), 0.0);
+                startState.mass[particle] = 0.0005;
             }
 
-            INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
+            //INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
+            INBodyIntegrator integrator = new RungeKuttaIntegrator(startState, RungeKuttaIntegrator.Flavor.rk4);
 
-            const double delta = 0.001;
+            const double delta = 0.0001;
             double oldTime;
             double newTime;
             INBodyState newState;
@@ -52,17 +56,14 @@ namespace nbodysketch
 
             int count = 0;
 
-            var timeProgress= new Stopwatch();
-            Debug.Assert(!timeProgress.IsRunning);
+            var UnitedStates = new List<EulerState>();
+            UnitedStates.Add(new EulerState(startState));
+
+            var timeProgress = new Stopwatch();
             var beginTime = DateTime.Now;
 
-            using (var file0 = new System.IO.FileStream("body0.csv", FileMode.Create, FileAccess.Write))
-            using (var sw0 = new StreamWriter(file0))
-            using (var file1 = new System.IO.FileStream("body1.csv", FileMode.Create, FileAccess.Write))
-            using (var sw1 = new StreamWriter(file1))
-                while (integrator.currentTMax < 12.5)
+            while (integrator.currentTMax < 120.0)
             {
-
                 oldTime = integrator.currentTMax;
 
                 timeProgress.Start();
@@ -71,16 +72,15 @@ namespace nbodysketch
 
                 newTime = integrator.currentTMax;
                 newState = integrator.currentState(newTime);
-                ekin = newState.Ekin();
-                epot = newState.Epot();
-                etot = ekin + epot;
 
-                // CheckComputationOfEpot(newState, epot);
+                if (0 == count % 1000)
+                    UnitedStates.Add(new EulerState(newState));
 
                 if (0 == (count % 50))
                 {
-                    sw0.WriteLine("{0}; {1}", newState.r(0)[0], newState.r(0)[1]);
-                    sw1.WriteLine("{0}; {1}", newState.r(1)[0], newState.r(1)[1]);
+                    ekin = newState.Ekin();
+                    epot = newState.Epot();
+                    etot = ekin + epot;
                     Console.WriteLine("t:{0} Ekin:{1} Epot:{2} Etot:{3} Ediff:{4}", newTime, ekin, epot, etot, etot - etot_start);
                 }
                 count++;
@@ -88,11 +88,18 @@ namespace nbodysketch
 
             var endTime = DateTime.Now;
             var elapsedTime = endTime - beginTime;
-           
 
-            Console.Error.WriteLine("iterations per second: {0}", ((double)count)/ elapsedTime.TotalSeconds );
+
+            Console.Error.WriteLine("iterations per second: {0}", ((double)count) / elapsedTime.TotalSeconds);
             Console.Error.WriteLine("{0} seconds total time", elapsedTime.TotalSeconds);
             Console.Error.WriteLine("{0} seconds in Progress", timeProgress.Elapsed.TotalSeconds);
+
+            string stateFileName = "data.xml";
+            var stateSerializer = new XmlSerializer(UnitedStates.GetType());
+            using (var stateFile = new System.IO.FileStream(stateFileName, FileMode.Create, FileAccess.Write))
+            {
+                stateSerializer.Serialize(stateFile, UnitedStates);
+            }
 
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -104,9 +111,9 @@ namespace nbodysketch
         private static void CheckComputationOfEpot(INBodyState newState, double epot)
         {
             var revState = new LeapFrogState(newState as LeapFrogState);
-            revState.position = revState.position.Reverse().ToArray();
-            revState.velocity = revState.velocity.Reverse().ToArray();
-            revState.mass = revState.mass.Reverse().ToArray();
+            revState.position.Reverse();
+            revState.velocity.Reverse();
+            revState.mass.Reverse();
             var revEpot = revState.Epot();
             if (!CompareDouble(revEpot, epot))
             {

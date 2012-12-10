@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace NBodyLib
@@ -7,63 +8,64 @@ namespace NBodyLib
 
     public interface INBodyState
     {
+        double t { get; }
         int N { get; }
         double G { get; }
+
 
         double m(int i);
 
         Vector3 r(int i);
         Vector3 v(int i);
+
+        IList<double> mList { get; }
+        IList<Vector3> rList { get; }
+        IList<Vector3> vList { get; }
     }
 
     public static class INBodyStateExtensions
     {
         static public Vector3 A_onFirstFromSecond(this INBodyState s, int first, int second)
         {
-            var result = new Vector3();
-
-            var First = s.r(first);
-            var Second = s.r(second);
-
-            var RDiff = Second - First;
+            var RDiff = s.rList[second] - s.rList[first];
 
             double RDiffNorm = RDiff.euklid_Norm();
 
             double factor = s.m(second) * s.G / Math.Pow(RDiffNorm, 3.0);
 
-            Vector3 force = factor * RDiff;
+            Vector3 acc = factor * RDiff;
 
-            return force;
+            return acc;
         }
 
         static public Vector3 A_onFirstFromAll(this INBodyState s, int first)
         {
-            Vector3 Force = new Vector3();
-
             var N = s.N;
 
-            for (int i = 0; i < N; i++) Force += s.A_onFirstFromSecond(first, i);
+            Vector3 acc = s.A_onFirstFromSecond(first, 0);
 
-            return Force;
+            for (int i = 1; i < N; i++) acc += s.A_onFirstFromSecond(first, i);
+
+            return acc;
         }
 
         static public Vector3[,] ComputeAccelerationMatrix(this INBodyState s)
         {
             var N = s.N;
             var acc = new Vector3[N, N];
+            var zero = new Vector3();
 
             // compute accelerations
             for (int i = 0; i < N; i++)
-                for (int j = i; j < N; j++)
+                for (int j = 0; j < N; j++)
                     if (j != i)
                     {
                         var a = s.A_onFirstFromSecond(i, j);
                         acc[i, j] = a;
-                        acc[j, i] = -a;
                     }
                     else
                     {
-                        acc[i, j] = new Vector3();
+                        acc[i, j] = zero;
                     }
             return acc;
         }
@@ -92,17 +94,15 @@ namespace NBodyLib
 
             // compute accelerations
             for (int i = 0; i < N; i++)
-                for (int j = i; j < N; j++)
+                for (int j = 0; j < N; j++)
                     if (j != i)
                     {
                         var a = s.A_onFirstFromSecond(i, j);
                         accVector[i] += a;
-                        accVector[j] -= a;
                     }
             
             return accVector;
         }
-
 
         static public double Etot(this INBodyState state)
         {
@@ -131,51 +131,20 @@ namespace NBodyLib
 
             var N = state.N;
 
-            double Mass = 0.0; 
-            for (int i = 0; i < N; i++) Mass += state.m(i);
-            Vector3 cog = new Vector3();
-            for (int i = 0; i < N; i++) cog += state.m(i) * state.r(i);
-            cog /= Mass;
-
             for (int i = 0; i < N; i++)
             {
-                Vector3 ri = state.r(i);
-                Vector3 ri_relative_to_cog = state.r(i) - cog;
-                double R = ri_relative_to_cog.euklid_Norm();
-                epot += state.m(i) * (Mass - state.m(i)) / R;
+
+                for(int j=0; j<N; j++)
+                    if (j != i)
+                    {
+                        double R = (state.r(j) - state.r(i)).euklid_Norm();
+                        epot += state.m(i) * state.m(j) / R;
+                    }
             }
-            epot *= -1.0 * state.G;
+
+            epot *= -state.G;
 
             return epot;
-
-
-            //var leftMasses = new double[N];
-
-            //leftMasses[0] = 0.0;
-            //var leftCenterOfGravity = new Vector3[N];
-            //leftCenterOfGravity[0] = new Vector3();
-            //for (int i = 1; i < N; i++)
-            //{
-            //    leftMasses[i] = leftMasses[i - 1] + state.m(i-1);
-            //    leftCenterOfGravity[i] = leftCenterOfGravity[i - 1] + (state.r(i-1) * state.m(i-1));
-            //}
-
-            //for (int i = 0; i < N; i++)
-            //{
-            //    leftCenterOfGravity[i] /= leftMasses[i];
-            //}
-
-
-            //for (int i = 1; i < N; i++)
-            //{
-            //    Vector3 ri = state.r(i);
-            //    Vector3 ri_relative_to_cog = state.r(i) - leftCenterOfGravity[i];
-            //    double R = ri_relative_to_cog.euklid_Norm();
-            //    epot += state.m(i) * leftMasses[i] / R;
-            //}
-            //epot *= -1.0 * state.G;
-
-            //return epot;
         }
     }
 
@@ -189,6 +158,6 @@ namespace NBodyLib
 
         INBodyState currentState(double t);
 
-        void Progress(double deltaTime);
+        void Progress(double dt);
     }
 }

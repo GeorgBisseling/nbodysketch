@@ -13,7 +13,8 @@ namespace NBodyLib
     public class Vector3
     {
 
-        double[] c;
+        public double[] c;
+
         public Vector3()
         {
             c = new double[3];
@@ -110,6 +111,19 @@ namespace NBodyLib
                 hash ^= c.GetHashCode();
             return hash;
         }
+
+        public static Vector3[] CopyArray(Vector3[] source)
+        {
+            if (null == source)
+                return null;
+
+            var L = source.Length;
+            var dest = new Vector3[L];
+            for (int i = 0; i < L; i++)
+                dest[i] = new Vector3(source[i]);
+            return dest;
+        }
+
 
         [TestMethod]
         public void Test()
