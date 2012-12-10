@@ -58,8 +58,8 @@ namespace SimplePlayer
                 dot.Fill = Brushes.Black;
                 dot.RadiusX = dot.RadiusY = 0.0;
 
-                var dotX = midx + 250.0 * pos[0];
-                var doty = midy - 250.0 * pos[1];
+                var dotX = midx + 200.0 * pos[0];
+                var doty = midy - 200.0 * pos[1];
 
                 dot.Width = Math.Max(2.0, 5.0 * mass);
                 dot.Height = Math.Max(2.0, 5.0 * mass);
@@ -82,7 +82,7 @@ namespace SimplePlayer
             base.OnActivated(e);
             if (null == timer)
             {
-                timer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Render, UpdateCanvas, this.Dispatcher);
+                timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1000.0 / 120.0), DispatcherPriority.Render, UpdateCanvas, this.Dispatcher);
                 timer.Start();
             }
         }
@@ -111,20 +111,19 @@ namespace SimplePlayer
                     (c as Shape).Fill = Brushes.LightGray;
             }
 
-
-
             var state = UnitedStates[effectiveIndex];
             var Ediff = (state.Etot() - EtotStart);
             AddStateToCanvas(effectiveIndex, Ediff);
             currentState += currentIncrement;
-            Trace.TraceInformation(currentState.ToString());
             Controls.Content = effectiveIndex.ToString() + " " + state.currentTime + " Ediff = " + Ediff.ToString();
         }
 
         double EtotStart;
         private void ReadStates()
         {
-            var fileName = @"C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\nbodysketch\bin\Debug\data.xml";
+            //var fileName = @"C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\nbodysketch\bin\Debug\data.xml";
+            string fileName = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "data.xml");
+            Console.WriteLine("Reading from \"{0}\"", fileName);
 
             var XmlDeserializer = new XmlSerializer(typeof(List<EulerState>));
 

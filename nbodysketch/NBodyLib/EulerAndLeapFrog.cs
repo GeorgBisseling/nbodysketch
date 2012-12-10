@@ -199,41 +199,38 @@ namespace NBodyLib
 
         public override void Progress(double dt)
         {
-            var N = state.N;
-            var deltaTimeHalf = dt * 0.5;
             var lfState = state as LeapFrogState;
-            lfState = null;
+            Progress_LeapFrog(lfState, dt);
+        }
+
+        public static void Progress_LeapFrog(LeapFrogState lfState, double dt)
+        {
+            var N = lfState.N;
+            var deltaTimeHalf = dt * 0.5;
             Vector3[] acceleration1;
 
-            if (null != lfState && state.currentTime == lfState.m_timeOfAccelerationCalculated && lfState.m_accelerations != null)
+            if (lfState.currentTime == lfState.m_timeOfAccelerationCalculated && lfState.m_accelerations != null) // && length matches, in case we merge or split particles
                 acceleration1 = lfState.m_accelerations;
             else
-                acceleration1 = state.ComputeAccelerationVectorDirect();
+                acceleration1 = lfState.ComputeAccelerationVectorDirect();
 
             for (int i = 0; i < N; i++)
             {
-                state.velocity[i] += acceleration1[i] * deltaTimeHalf;
+                lfState.velocity[i] += acceleration1[i] * deltaTimeHalf;
+                lfState.position[i] += lfState.velocity[i] * dt;
             }
+
+            var acceleration2 = lfState.ComputeAccelerationVectorDirect();
 
             for (int i = 0; i < N; i++)
             {
-                state.position[i] += state.velocity[i] * dt;
+                lfState.velocity[i] += acceleration2[i] * deltaTimeHalf;
             }
 
-            var acceleration2 = state.ComputeAccelerationVectorDirect();
+            lfState.currentTime += dt;
 
-            for (int i = 0; i < N; i++)
-            {
-                state.velocity[i] += acceleration2[i] * deltaTimeHalf;
-            }
-
-            state.currentTime += dt;
-
-            if (null != lfState)
-            {
-                lfState.m_timeOfAccelerationCalculated = state.currentTime;
-                lfState.m_accelerations = acceleration2;
-            }
+            lfState.m_timeOfAccelerationCalculated = lfState.currentTime;
+            lfState.m_accelerations = acceleration2;
         }
 
     }

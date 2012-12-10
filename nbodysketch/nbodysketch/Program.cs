@@ -19,7 +19,7 @@ namespace nbodysketch
         {
             //Vector3.Test();
 
-            int N = 9;
+            int N = 10;
             double G = 1.0;
             double mass = 1.0;
 
@@ -34,15 +34,15 @@ namespace nbodysketch
             for (int particle = 2; particle < N; particle++)
             {
                 double angle = particle * 2.0 * Math.PI / (N - 2);
-                startState.position[particle] = new Vector3(0.25 * Math.Sin(angle), 0.25 * Math.Cos(angle), 0.0);
-                startState.velocity[particle] = new Vector3(0.11 * Math.Cos(angle), 0.11 * -Math.Sin(angle), 0.0);
+                startState.position[particle] = new Vector3(2.0 * Math.Sin(angle), 2.00 * Math.Cos(angle), 0.0);
+                startState.velocity[particle] = new Vector3(-0.75 * Math.Cos(angle), 0.75 * Math.Sin(angle), 0.0);
                 startState.mass[particle] = 0.0005;
             }
 
-            //INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
-            INBodyIntegrator integrator = new RungeKuttaIntegrator(startState, RungeKuttaIntegrator.Flavor.rk4);
+            INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
+            //INBodyIntegrator integrator = new RungeKuttaIntegrator(startState, RungeKuttaIntegrator.Flavor.yo8);
 
-            const double delta = 0.0001;
+            const double delta = 0.01;
             double oldTime;
             double newTime;
             INBodyState newState;
@@ -62,7 +62,7 @@ namespace nbodysketch
             var timeProgress = new Stopwatch();
             var beginTime = DateTime.Now;
 
-            while (integrator.currentTMax < 120.0)
+            while (integrator.currentTMax < 20.0)
             {
                 oldTime = integrator.currentTMax;
 
@@ -73,7 +73,7 @@ namespace nbodysketch
                 newTime = integrator.currentTMax;
                 newState = integrator.currentState(newTime);
 
-                if (0 == count % 1000)
+                if (0 == count % 10)
                     UnitedStates.Add(new EulerState(newState));
 
                 if (0 == (count % 50))
@@ -93,8 +93,9 @@ namespace nbodysketch
             Console.Error.WriteLine("iterations per second: {0}", ((double)count) / elapsedTime.TotalSeconds);
             Console.Error.WriteLine("{0} seconds total time", elapsedTime.TotalSeconds);
             Console.Error.WriteLine("{0} seconds in Progress", timeProgress.Elapsed.TotalSeconds);
-
-            string stateFileName = "data.xml";
+            
+            string stateFileName = Path.Combine(Path.GetTempPath(), "data.xml");
+            Console.Error.WriteLine("Storing to \"{0}\"", stateFileName);
             var stateSerializer = new XmlSerializer(UnitedStates.GetType());
             using (var stateFile = new System.IO.FileStream(stateFileName, FileMode.Create, FileAccess.Write))
             {

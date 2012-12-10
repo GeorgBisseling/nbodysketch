@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Threading.Tasks;
+ 
 namespace NBodyLib
 {
 
@@ -89,17 +90,20 @@ namespace NBodyLib
             var N = s.N;
             var accVector = new Vector3[N];
 
-            for (int i = 0; i < N; i++)
-                accVector[i] = new Vector3();
+            var po = new ParallelOptions {MaxDegreeOfParallelism = System.Environment.ProcessorCount * 2 };
 
             // compute accelerations
-            for (int i = 0; i < N; i++)
+            //for (int i = 0; i < N; i++)
+            Parallel.For(0, N, po, i =>
+            {
+                accVector[i] = new Vector3();
                 for (int j = 0; j < N; j++)
                     if (j != i)
                     {
                         var a = s.A_onFirstFromSecond(i, j);
                         accVector[i] += a;
                     }
+            });
             
             return accVector;
         }

@@ -9,7 +9,6 @@
         </Grid.RowDefinitions>
 
         <Canvas Name="Universe"  Grid.Row="0"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ClipToBounds="True" >
-            <Rectangle Fill="Black" Width="30" Height="20"  />
         </Canvas>
         <Label Name="Controls" Grid.Row="1">TBD</Label>
 
