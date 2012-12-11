@@ -82,7 +82,7 @@ namespace NBodyLib
 
         private void Progress_rk4(double dt)
         {
-            var po = new ParallelOptions { MaxDegreeOfParallelism = System.Environment.ProcessorCount * 2 };
+            var po = new ParallelOptions { MaxDegreeOfParallelism = System.Environment.ProcessorCount};
 
             var N = state.N;
             var old_pos = state.position.AsParallel().Select(oldpos => new Vector3(oldpos)).ToList();

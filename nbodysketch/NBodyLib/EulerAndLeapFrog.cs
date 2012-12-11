@@ -49,13 +49,13 @@ namespace NBodyLib
             currentTime = other.t;
             N = other.N;
             G = other.G;
-            mass = new List<double>(other.mList);
+            mass = new List<double>(other.m);
             position = new List<Vector3>(N);
             velocity = new List<Vector3>(N);
             for (int i = 0; i < N; i++)
             {
-                position.Add( new Vector3(other.r(i)));
-                velocity.Add( new Vector3(other.v(i)));
+                position.Add( new Vector3(other.r[i]) );
+                velocity.Add( new Vector3(other.v[i]) );
             }
         }
 
@@ -66,35 +66,20 @@ namespace NBodyLib
         public double G { get; set; }
 
         public List<double> mass;
-        public double m(int i)
-        {
-            return mass[i];
-        }
-
         public List<Vector3> position;
-        public Vector3 r(int i)
-        {
-            return position[i];
-        }
-
         public List<Vector3> velocity;
-        public Vector3 v(int i)
-        {
-            return velocity[i];
-        }
 
-
-        public IList<double> mList
+        public IList<double> m
         {
             get { return mass; }
         }
 
-        public System.Collections.Generic.IList<Vector3> rList
+        public System.Collections.Generic.IList<Vector3> r
         {
             get { return position; }
         }
 
-        public System.Collections.Generic.IList<Vector3> vList
+        public System.Collections.Generic.IList<Vector3> v
         {
             get { return velocity; }
         }
@@ -196,7 +181,6 @@ namespace NBodyLib
         {
         }
 
-
         public override void Progress(double dt)
         {
             var lfState = state as LeapFrogState;
@@ -232,7 +216,5 @@ namespace NBodyLib
             lfState.m_timeOfAccelerationCalculated = lfState.currentTime;
             lfState.m_accelerations = acceleration2;
         }
-
     }
-
 }

@@ -19,7 +19,7 @@ namespace nbodysketch
         {
             //Vector3.Test();
 
-            int N = 10;
+            int N = 100;
             double G = 1.0;
             double mass = 1.0;
 
@@ -42,7 +42,7 @@ namespace nbodysketch
             INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
             //INBodyIntegrator integrator = new RungeKuttaIntegrator(startState, RungeKuttaIntegrator.Flavor.yo8);
 
-            const double delta = 0.01;
+            const double delta = 0.001;
             double oldTime;
             double newTime;
             INBodyState newState;
@@ -62,7 +62,7 @@ namespace nbodysketch
             var timeProgress = new Stopwatch();
             var beginTime = DateTime.Now;
 
-            while (integrator.currentTMax < 20.0)
+            while (integrator.currentTMax < 2.0)
             {
                 oldTime = integrator.currentTMax;
 

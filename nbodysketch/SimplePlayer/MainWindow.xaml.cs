@@ -52,8 +52,8 @@ namespace SimplePlayer
 
             for (int i = 0; i < state.N; i++)
             {
-                var pos = state.r(i);
-                var mass = state.m(i);
+                var pos = state.r[i];
+                var mass = state.m[i];
                 var dot = new Rectangle();
                 dot.Fill = Brushes.Black;
                 dot.RadiusX = dot.RadiusY = 0.0;

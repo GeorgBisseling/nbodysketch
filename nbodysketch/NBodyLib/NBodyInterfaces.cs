@@ -13,30 +13,26 @@ namespace NBodyLib
         int N { get; }
         double G { get; }
 
-
-        double m(int i);
-
-        Vector3 r(int i);
-        Vector3 v(int i);
-
-        IList<double> mList { get; }
-        IList<Vector3> rList { get; }
-        IList<Vector3> vList { get; }
+        IList<double> m { get; }
+        IList<Vector3> r { get; }
+        IList<Vector3> v { get; }
     }
 
     public static class INBodyStateExtensions
     {
         static public Vector3 A_onFirstFromSecond(this INBodyState s, int first, int second)
         {
-            var RDiff = s.rList[second] - s.rList[first];
+            var RDiff = s.r[second] - s.r[first];
 
-            double RDiffNorm = RDiff.euklid_Norm();
+            double R = RDiff.euklid_Norm();
 
-            double factor = s.m(second) * s.G / Math.Pow(RDiffNorm, 3.0);
+            double factor = (s.m[second] * s.G / (R * R * R));
 
-            Vector3 acc = factor * RDiff;
+            RDiff.c[0] *= factor;
+            RDiff.c[1] *= factor;
+            RDiff.c[2] *= factor;
 
-            return acc;
+            return RDiff;
         }
 
         static public Vector3 A_onFirstFromAll(this INBodyState s, int first)
@@ -54,7 +50,6 @@ namespace NBodyLib
         {
             var N = s.N;
             var acc = new Vector3[N, N];
-            var zero = new Vector3();
 
             // compute accelerations
             for (int i = 0; i < N; i++)
@@ -66,7 +61,7 @@ namespace NBodyLib
                     }
                     else
                     {
-                        acc[i, j] = zero;
+                        acc[i, j] = new Vector3();
                     }
             return acc;
         }
@@ -90,18 +85,18 @@ namespace NBodyLib
             var N = s.N;
             var accVector = new Vector3[N];
 
-            var po = new ParallelOptions {MaxDegreeOfParallelism = System.Environment.ProcessorCount * 2 };
-
             // compute accelerations
-            //for (int i = 0; i < N; i++)
-            Parallel.For(0, N, po, i =>
+            Parallel.For(0, N, i =>
             {
                 accVector[i] = new Vector3();
                 for (int j = 0; j < N; j++)
                     if (j != i)
                     {
-                        var a = s.A_onFirstFromSecond(i, j);
-                        accVector[i] += a;
+                        var c = s.A_onFirstFromSecond(i, j).c;
+                        var lc = accVector[i].c;
+                        lc[0] += c[0];
+                        lc[1] += c[1];
+                        lc[2] += c[2];
                     }
             });
             
@@ -119,12 +114,13 @@ namespace NBodyLib
         {
             double ekin = 0.0;
             var N = state.N;
-            for (int i = 0; i < N; i++)
+            Parallel.For(0, N, i =>
+            // for (int i = 0; i < N; i++)
             {
-                var v = state.v(i);
-                double m = state.m(i);
+                var v = state.v[i];
+                double m = state.m[i];
                 ekin += m * (v * v);
-            }
+            });
             ekin *= 0.5;
             return ekin;
         }
@@ -135,16 +131,18 @@ namespace NBodyLib
 
             var N = state.N;
 
-            for (int i = 0; i < N; i++)
+            Parallel.For(0, N, i =>
+            // for (int i = 0; i < N; i++)
             {
-
-                for(int j=0; j<N; j++)
+                var ri = state.r[i];
+                var mi = state.m[i];
+                for (int j = 0; j < N; j++)
                     if (j != i)
                     {
-                        double R = (state.r(j) - state.r(i)).euklid_Norm();
-                        epot += state.m(i) * state.m(j) / R;
+                        double R = (state.r[j] - ri).euklid_Norm();
+                        epot += mi * state.m[j] / R;
                     }
-            }
+            });
 
             epot *= -state.G;
 

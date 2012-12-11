@@ -34,20 +34,31 @@ namespace NBodyLib
 
         public double this [int i] {get {return c[i];} set{c[i] = value;}}
 
-
         public static Vector3 operator + (Vector3 l, Vector3 r)
         {
-            return new Vector3( l.c[0] + r.c[0], l.c[1] + r.c[1], l.c[2] + r.c[2]);
+            var v = new Vector3();
+            v.c[0] = l.c[0] + r.c[0];
+            v.c[1] = l.c[1] + r.c[1];
+            v.c[2] = l.c[2] + r.c[2];
+            return v;
         }
 
         public static Vector3 operator - (Vector3 l, Vector3 r)
         {
-            return new Vector3(l.c[0] - r.c[0], l.c[1] - r.c[1], l.c[2] - r.c[2]);
+            var v = new Vector3();
+            v.c[0] = l.c[0] - r.c[0];
+            v.c[1] = l.c[1] - r.c[1];
+            v.c[2] = l.c[2] - r.c[2];
+            return v;
         }
 
         public static Vector3 operator -(Vector3 r)
         {
-            return new Vector3( - r.c[0], - r.c[1], - r.c[2]);
+            var v = new Vector3();
+            v.c[0] =  - r.c[0];
+            v.c[1] =  - r.c[1];
+            v.c[2] =  - r.c[2];
+            return v;
         }
 
         public static double operator *(Vector3 l, Vector3 r)
@@ -57,31 +68,44 @@ namespace NBodyLib
 
         public static Vector3 operator *(double l, Vector3 r)
         {
-            return new Vector3(r.c[0] * l, r.c[1] * l, r.c[2] * l);
+            var v = new Vector3();
+            v.c[0] = l * r.c[0];
+            v.c[1] = l * r.c[1];
+            v.c[2] = l * r.c[2];
+            return v;
         }
 
         public static Vector3 operator *(Vector3 l, double r )
         {
-            return new Vector3(l.c[0] * r, l.c[1] * r, l.c[2] * r);
+            var v = new Vector3();
+            v.c[0] = l.c[0] * r;
+            v.c[1] = l.c[1] * r;
+            v.c[2] = l.c[2] * r;
+            return v;
         }
 
         public static Vector3 operator / (Vector3 l, double r)
         {
-            return l * (1.0 / r);
+            var v = new Vector3();
+            v.c[0] = l.c[0] / r;
+            v.c[1] = l.c[1] / r;
+            v.c[2] = l.c[2] / r;
+            return v;
         }
 
         public double euklid_Norm()
         {
-            double norm = 0.0;
-            for (int i = 0; i < c.Length; i++)
-                norm += c[i] * c[i];
-            return Math.Sqrt(norm);
+            return Math.Sqrt(c[0]*c[0]+c[1]*c[1]+c[2]*c[2]);
         }
 
         public Vector3 unit()
         {
             double n = euklid_Norm();
-            return new Vector3(c[0] / n, c[1] / n, c[2] / n);
+            var v = new Vector3();
+            v.c[0] = c[0] / n;
+            v.c[1] = c[1] / n;
+            v.c[2] = c[2] / n;
+            return v;
         }
 
         public override string ToString()
