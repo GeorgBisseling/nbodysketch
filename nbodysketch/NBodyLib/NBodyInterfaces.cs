@@ -12,6 +12,7 @@ namespace NBodyLib
         double t { get; }
         int N { get; }
         double G { get; }
+        double eps { get; } // softening length
 
         IList<double> m { get; }
         IList<Vector3> r { get; }
@@ -24,13 +25,15 @@ namespace NBodyLib
         {
             var RDiff = s.r[second] - s.r[first];
 
-            double R = RDiff.euklid_Norm();
+            double R2 = RDiff * RDiff;
+            double R = Math.Sqrt(R2);
+            double eps2 = s.eps * s.eps;
 
-            double factor = (s.m[second] * s.G / (R * R * R));
+            double factor = s.m[second] * s.G / (R * (R2 + s.eps*s.eps) );
 
-            RDiff.c[0] *= factor;
-            RDiff.c[1] *= factor;
-            RDiff.c[2] *= factor;
+            RDiff.c0 *= factor;
+            RDiff.c1 *= factor;
+            RDiff.c2 *= factor;
 
             return RDiff;
         }
@@ -92,11 +95,10 @@ namespace NBodyLib
                 for (int j = 0; j < N; j++)
                     if (j != i)
                     {
-                        var c = s.A_onFirstFromSecond(i, j).c;
-                        var lc = accVector[i].c;
-                        lc[0] += c[0];
-                        lc[1] += c[1];
-                        lc[2] += c[2];
+                        var a = s.A_onFirstFromSecond(i, j);
+                        accVector[i].c0 += a.c0;
+                        accVector[i].c1 += a.c1;
+                        accVector[i].c2 += a.c2;
                     }
             });
             
@@ -130,6 +132,7 @@ namespace NBodyLib
             double epot = 0.0;
 
             var N = state.N;
+            var eps2 = state.eps * state.eps;
 
             Parallel.For(0, N, i =>
             // for (int i = 0; i < N; i++)
@@ -139,8 +142,9 @@ namespace NBodyLib
                 for (int j = 0; j < N; j++)
                     if (j != i)
                     {
-                        double R = (state.r[j] - ri).euklid_Norm();
-                        epot += mi * state.m[j] / R;
+                        var RDiff = (state.r[j] - ri);
+                        var R2 = RDiff * RDiff;
+                        epot += mi * state.m[j] / Math.Sqrt(R2 + eps2);
                     }
             });
 

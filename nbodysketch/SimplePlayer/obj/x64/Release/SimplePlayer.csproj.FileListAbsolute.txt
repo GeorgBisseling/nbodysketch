@@ -1,0 +1,15 @@
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Release\SimplePlayer.exe.config
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Release\SimplePlayer.exe
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Release\SimplePlayer.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Release\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Release\NBodyLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\SimplePlayer.csprojResolveAssemblyReference.cache
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\MainWindow.baml
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\MainWindow.g.cs
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\App.g.cs
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\SimplePlayer_MarkupCompile.cache
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\SimplePlayer.g.resources
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\SimplePlayer.Properties.Resources.resources
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\SimplePlayer.csproj.GenerateResource.Cache
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\SimplePlayer.exe
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Release\SimplePlayer.pdb

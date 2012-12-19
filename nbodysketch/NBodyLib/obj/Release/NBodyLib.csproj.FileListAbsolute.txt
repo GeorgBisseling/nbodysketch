@@ -6,3 +6,4 @@ C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\N
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Release\NBodyLib.pdb
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Release\NBodyLib.dll
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Release\NBodyLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Release\NBodyLib.csprojResolveAssemblyReference.cache

@@ -1,0 +1,6 @@
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\x64\Debug\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\x64\Debug\NBodyLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\x64\Debug\NBodyLib.dll.CodeAnalysisLog.xml
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\x64\Debug\NBodyLib.dll.lastcodeanalysissucceeded
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\x64\Debug\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\x64\Debug\NBodyLib.pdb

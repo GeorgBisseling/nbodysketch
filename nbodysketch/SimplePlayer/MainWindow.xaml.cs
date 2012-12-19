@@ -34,7 +34,10 @@ namespace SimplePlayer
 
         List<EulerState> UnitedStates;
         int currentState = 0;
-        int currentIncrement = 1;
+        int currentIncrement = 10;
+
+        List<Polyline> particleLines;
+        Polyline energyLine;
 
         private void AddStateToCanvas(int index, double Ediff)
         {
@@ -43,18 +46,29 @@ namespace SimplePlayer
             double midy = Universe.ActualHeight / 2.0;
 
             var Edot = new Rectangle();
+            Edot.SetValue(Canvas.ZIndexProperty, 1);
             Edot.Width = 2.0;
             Edot.Height = 2.0;
-            Edot.SetValue(Canvas.LeftProperty, midx * 2.0 * index / (double)UnitedStates.Count - Edot.Width/2.0 );
-            Edot.SetValue(Canvas.TopProperty, midy + Ediff / Math.Abs(EtotStart) * 100.0 - Edot.Width / 2.0);
+            var edotx = midx * 2.0 * index / (double)UnitedStates.Count - Edot.Width/2.0;
+            var edoty = midy + Ediff / Math.Abs(EtotStart) * 100.0 - Edot.Width / 2.0;
+
+            Edot.SetValue(Canvas.LeftProperty, edotx );
+            Edot.SetValue(Canvas.TopProperty, edoty );
             Edot.Fill = Brushes.Red;
             Universe.Children.Add(Edot);
 
+            energyLine.Points.Add(new Point(edotx, edoty));
+            if (energyLine.Points.Count > 100) energyLine.Points.RemoveAt(0);
+            Universe.Children.Add(energyLine);
+
             for (int i = 0; i < state.N; i++)
             {
+                var line = particleLines[i];
+
                 var pos = state.r[i];
                 var mass = state.m[i];
                 var dot = new Rectangle();
+                dot.SetValue(Canvas.ZIndexProperty, 1);
                 dot.Fill = Brushes.Black;
                 dot.RadiusX = dot.RadiusY = 0.0;
 
@@ -67,7 +81,12 @@ namespace SimplePlayer
                 dot.SetValue(Canvas.TopProperty, doty - dot.Height / 2.0);
 
                 Universe.Children.Add(dot);
+                line.Points.Add(new Point(dotX, doty));
+                if (line.Points.Count > 100) line.Points.RemoveAt(0);
+                Universe.Children.Add(line);
             }
+
+
         }
 
         DispatcherTimer timer;
@@ -82,7 +101,7 @@ namespace SimplePlayer
             base.OnActivated(e);
             if (null == timer)
             {
-                timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1000.0 / 120.0), DispatcherPriority.Render, UpdateCanvas, this.Dispatcher);
+                timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1.0), DispatcherPriority.Render, UpdateCanvas, this.Dispatcher);
                 timer.Start();
             }
         }
@@ -96,19 +115,33 @@ namespace SimplePlayer
 
         private void UpdateCanvas(object sender, EventArgs e)
         {
-            //Universe.Children.Clear();
+            Universe.Children.Clear();
 
             int effectiveIndex = currentState % UnitedStates.Count;
 
-            if (currentState > UnitedStates.Count)
+            if (currentState == 0 || currentState > UnitedStates.Count)
             {
+                var N = UnitedStates[0].N;
                 Universe.Children.Clear();
+                particleLines = new List<Polyline>();
+                for (int i = 0; i < N; i++)
+                {
+                    var line = new Polyline();
+                    line.Stroke = Brushes.LightGray;
+                    line.StrokeThickness = 1;
+                    particleLines.Add(line);
+                }
+                energyLine = new Polyline();
+                energyLine.Stroke = Brushes.LightGray;
+                energyLine.StrokeThickness = 1;
+
                 currentState = currentState % UnitedStates.Count;
+                
             }
             else
             {
-                foreach (var c in Universe.Children)
-                    (c as Shape).Fill = Brushes.LightGray;
+                //foreach (var c in Universe.Children)
+                //    (c as Shape).Fill = Brushes.LightGray;
             }
 
             var state = UnitedStates[effectiveIndex];

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace NBodyLib
 {
@@ -13,11 +14,12 @@ namespace NBodyLib
         {
         }
         
-        public EulerState(int n, double gravitationalConstant, double defaultMass)
+        public EulerState(int n, double gravitationalConstant, double defaultMass, double softeningLength)
         {
             currentTime = 0.0;
             N = n;
             G = gravitationalConstant;
+            eps = softeningLength;
             mass = new List<double>(N);
             position = new List<Vector3>(N);
             velocity = new List<Vector3>(N);
@@ -34,6 +36,7 @@ namespace NBodyLib
             currentTime = other.currentTime;
             N = other.N;
             G = other.G;
+            eps = other.eps;
             mass =  new List<double>( other.mass );
             position = new List<Vector3>(N); 
             velocity = new List<Vector3>(N);
@@ -49,6 +52,7 @@ namespace NBodyLib
             currentTime = other.t;
             N = other.N;
             G = other.G;
+            eps = other.eps;
             mass = new List<double>(other.m);
             position = new List<Vector3>(N);
             velocity = new List<Vector3>(N);
@@ -64,6 +68,7 @@ namespace NBodyLib
 
         public int N { get; set; }
         public double G { get; set; }
+        public double eps { get; set; }
 
         public List<double> mass;
         public List<Vector3> position;
@@ -142,10 +147,17 @@ namespace NBodyLib
         {
         }
 
-        public LeapFrogState(int n, double gravitationalConstant, double defaultMass)
-            : base(n, gravitationalConstant, defaultMass)
+        public LeapFrogState(int n, double gravitationalConstant, double defaultMass, double softeningLength)
+            : base(n, gravitationalConstant, defaultMass, softeningLength)
         {
 
+        }
+
+        public LeapFrogState(INBodyState state)
+            : base(state)
+        {
+            m_timeOfAccelerationCalculated = -1.0;
+            m_accelerations = null;
         }
 
         public LeapFrogState(EulerState state)
@@ -198,18 +210,20 @@ namespace NBodyLib
             else
                 acceleration1 = lfState.ComputeAccelerationVectorDirect();
 
-            for (int i = 0; i < N; i++)
+            Parallel.For(0, N, i =>
+            //for (int i = 0; i < N; i++)
             {
                 lfState.velocity[i] += acceleration1[i] * deltaTimeHalf;
                 lfState.position[i] += lfState.velocity[i] * dt;
-            }
+            });
 
             var acceleration2 = lfState.ComputeAccelerationVectorDirect();
 
-            for (int i = 0; i < N; i++)
+            Parallel.For(0, N, i =>
+            //for (int i = 0; i < N; i++)
             {
                 lfState.velocity[i] += acceleration2[i] * deltaTimeHalf;
-            }
+            });
 
             lfState.currentTime += dt;
 

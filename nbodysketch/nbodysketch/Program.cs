@@ -17,30 +17,43 @@ namespace nbodysketch
     {
         static void Main(string[] args)
         {
+            bool cancelled = false;
+
+            Console.TreatControlCAsInput = false;
+            Console.CancelKeyPress += (s, ev) =>
+            {
+                Console.WriteLine("Ctrl+C pressed");
+                ev.Cancel = true;
+                cancelled = true;
+            };
+
+
+
+            Exception caught = null;
+
             //Vector3.Test();
 
-            int N = 100;
+            int N = 1000;
             double G = 1.0;
             double mass = 1.0;
+            double softeningLength = 0.1;
+            var startState = new EulerState(N, gravitationalConstant: G, defaultMass: mass, softeningLength: softeningLength);
 
-            var startState = new EulerState(N, gravitationalConstant: G, defaultMass: mass);
 
-            startState.position[0][0] = -1.0;
-            startState.velocity[0][1] = -0.5;
 
-            startState.position[1][0] = 1.0;
-            startState.velocity[1][1] = 0.5;
+            // StartUp_Ring(N, startState);
 
-            for (int particle = 2; particle < N; particle++)
-            {
-                double angle = particle * 2.0 * Math.PI / (N - 2);
-                startState.position[particle] = new Vector3(2.0 * Math.Sin(angle), 2.00 * Math.Cos(angle), 0.0);
-                startState.velocity[particle] = new Vector3(-0.75 * Math.Cos(angle), 0.75 * Math.Sin(angle), 0.0);
-                startState.mass[particle] = 0.0005;
-            }
+            //StartUp_TwoOnCircle(startState);
 
-            INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
-            //INBodyIntegrator integrator = new RungeKuttaIntegrator(startState, RungeKuttaIntegrator.Flavor.yo8);
+            //StartUp_ThreeOnEight(startState);
+
+            //StartUp_ColdCollapse8(startState);
+
+            StartUp_Ring(N, startState);
+
+            //INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
+            //INBodyIntegrator integrator = new RungeKuttaIntegrator(startState, RungeKuttaIntegrator.Flavor.rk4);
+            INBodyIntegrator integrator = new MultiStepIntegrator(startState, MultiStepIntegrator.Flavor.ms8);
 
             const double delta = 0.001;
             double oldTime;
@@ -62,44 +75,62 @@ namespace nbodysketch
             var timeProgress = new Stopwatch();
             var beginTime = DateTime.Now;
 
-            while (integrator.currentTMax < 2.0)
+            try
             {
-                oldTime = integrator.currentTMax;
 
-                timeProgress.Start();
-                integrator.Progress(delta);
-                timeProgress.Stop();
-
-                newTime = integrator.currentTMax;
-                newState = integrator.currentState(newTime);
-
-                if (0 == count % 10)
-                    UnitedStates.Add(new EulerState(newState));
-
-                if (0 == (count % 50))
+                while (!cancelled && integrator.currentTMax < 200.0)
                 {
-                    ekin = newState.Ekin();
-                    epot = newState.Epot();
-                    etot = ekin + epot;
-                    Console.WriteLine("t:{0} Ekin:{1} Epot:{2} Etot:{3} Ediff:{4}", newTime, ekin, epot, etot, etot - etot_start);
+                    oldTime = integrator.currentTMax;
+
+                    timeProgress.Start();
+                    integrator.Progress(delta);
+                    timeProgress.Stop();
+
+                    newTime = integrator.currentTMax;
+                    newState = integrator.currentState(newTime);
+
+                    if (0 == count % 10)
+                    {
+                        var saveState = new EulerState(newState);
+                        UnitedStates.Add(saveState);
+                    }
+
+                    if (0 == (count % 50))
+                    {
+                        ekin = newState.Ekin();
+                        epot = newState.Epot();
+                        etot = ekin + epot;
+                        Console.WriteLine("t:{0} Ekin:{1} Epot:{2} Etot:{3} Ediff:{4}", newTime, ekin, epot, etot, etot - etot_start);
+                    }
+                    count++;
                 }
-                count++;
+
+                var endTime = DateTime.Now;
+                var elapsedTime = endTime - beginTime;
+
+
+                Console.Error.WriteLine("iterations per second: {0}", ((double)count) / elapsedTime.TotalSeconds);
+                Console.Error.WriteLine("{0} seconds total time", elapsedTime.TotalSeconds);
+                Console.Error.WriteLine("{0} seconds in Progress", timeProgress.Elapsed.TotalSeconds);
+            }
+            catch (Exception e)
+            {
+                caught = e;
+            }
+            finally
+            {
+                string stateFileName = Path.Combine(Path.GetTempPath(), "data.xml");
+                Console.Error.WriteLine("Storing to \"{0}\"", stateFileName);
+                var stateSerializer = new XmlSerializer(UnitedStates.GetType());
+                using (var stateFile = new System.IO.FileStream(stateFileName, FileMode.Create, FileAccess.Write))
+                {
+                    stateSerializer.Serialize(stateFile, UnitedStates);
+                }
             }
 
-            var endTime = DateTime.Now;
-            var elapsedTime = endTime - beginTime;
-
-
-            Console.Error.WriteLine("iterations per second: {0}", ((double)count) / elapsedTime.TotalSeconds);
-            Console.Error.WriteLine("{0} seconds total time", elapsedTime.TotalSeconds);
-            Console.Error.WriteLine("{0} seconds in Progress", timeProgress.Elapsed.TotalSeconds);
-            
-            string stateFileName = Path.Combine(Path.GetTempPath(), "data.xml");
-            Console.Error.WriteLine("Storing to \"{0}\"", stateFileName);
-            var stateSerializer = new XmlSerializer(UnitedStates.GetType());
-            using (var stateFile = new System.IO.FileStream(stateFileName, FileMode.Create, FileAccess.Write))
+            if (null != caught)
             {
-                stateSerializer.Serialize(stateFile, UnitedStates);
+                Console.Error.WriteLine(caught.ToString());
             }
 
             if (System.Diagnostics.Debugger.IsAttached)
@@ -108,6 +139,60 @@ namespace nbodysketch
                 Console.ReadLine();
             }
         }
+
+        private static void StartUp_Ring(int N, EulerState startState)
+        {
+            var rand = new Random();
+            for (int particle = 0; particle < N; particle++)
+            {
+                double angle = particle * 2.0 * Math.PI / (N - 2);
+                double a = 0.01 * rand.NextDouble();
+                double b = 0.01 * rand.NextDouble();
+                double rFactor = 1.0 + (particle % 10) * 0.1; 
+                startState.position[particle] = new Vector3(1.0 * Math.Sin(angle), 1.0 * Math.Cos(angle), 0.0) * rFactor;
+                startState.velocity[particle] = new Vector3( a - 0.1 * Math.Cos(angle), b + 0.1 * Math.Sin(angle), 0.0) * rFactor * rFactor;
+                //startState.position[particle] = new Vector3(2 - 4 * rand.NextDouble(), 2 - 4 * rand.NextDouble(), 0.0);
+                //startState.velocity[particle] = new Vector3(0.0, 0.0, 0.0);
+                startState.mass[particle] = 0.0005;
+            }
+        }
+
+        private static void StartUp_TwoOnCircle(EulerState startState)
+        {
+            // two in a circle
+            startState.position[0][0] = -1.0;
+            startState.velocity[0][1] = -0.5;
+
+            startState.position[1][0] = 1.0;
+            startState.velocity[1][1] = 0.5;
+        }
+
+        private static void StartUp_ThreeOnEight(EulerState startState)
+        {
+            // three in an eight
+            startState.position[0] = new Vector3(0.9700436, -0.24308753);
+            startState.velocity[0] = new Vector3(0.466203685, 0.43236573);
+
+            startState.position[1] = new Vector3(-0.9700436, 0.24308753);
+            startState.velocity[1] = new Vector3(0.466203685, 0.43236573);
+
+            startState.position[2] = new Vector3();
+            startState.velocity[2] = new Vector3(-0.93240737, -0.86473146);
+        }
+
+        private static void StartUp_ColdCollapse8(EulerState startState)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                double x = (i & 1) * 1.0;
+                double y = (i & 2) * 0.5;
+                double z = (i & 4) * 0.25;
+                startState.position[i] = new Vector3(x, y, z);
+                startState.velocity[i] = new Vector3();
+                startState.mass[i] = 1.0 + i * 0.1;
+            }
+        }
+
 
         private static void CheckComputationOfEpot(INBodyState newState, double epot)
         {

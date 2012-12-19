@@ -12,99 +12,115 @@ namespace NBodyLib
     [TestClass]
     public class Vector3
     {
-
-        public double[] c;
+        public double c0, c1, c2;
 
         public Vector3()
         {
-            c = new double[3];
         }
 
         public Vector3(Vector3 v)
         {
-            c = new double[3];
-            v.c.CopyTo(c, 0);
+            c0 = v.c0; c1 = v.c1; c2 = v.c2;
         }
 
-        public Vector3(params double[] v)
+        public Vector3(double x, double y = 0.0, double z = 0.0)
         {
-            c = new double[3];
-            v.CopyTo(c, 0);
+            c0 = x; c1 = y; c2 = z;
         }
 
-        public double this [int i] {get {return c[i];} set{c[i] = value;}}
+        public double this [int i] 
+        {
+            get {
+                switch (i)
+                {
+                    case 0: return c0;
+                    case 1: return c1;
+                    case 2: return c2;
+                }
+                throw new IndexOutOfRangeException();
+            } 
+            set {
+                switch (i)
+                {
+                    case 0: c0 = value; return;
+                    case 1: c1 = value; return;
+                    case 2: c2 = value; return;
+                }
+                throw new IndexOutOfRangeException();
+            }
+        }
 
         public static Vector3 operator + (Vector3 l, Vector3 r)
         {
             var v = new Vector3();
-            v.c[0] = l.c[0] + r.c[0];
-            v.c[1] = l.c[1] + r.c[1];
-            v.c[2] = l.c[2] + r.c[2];
+            v.c0 = l.c0 + r.c0;
+            v.c1 = l.c1 + r.c1;
+            v.c2 = l.c2 + r.c2;
             return v;
         }
 
         public static Vector3 operator - (Vector3 l, Vector3 r)
         {
             var v = new Vector3();
-            v.c[0] = l.c[0] - r.c[0];
-            v.c[1] = l.c[1] - r.c[1];
-            v.c[2] = l.c[2] - r.c[2];
+            v.c0 = l.c0 - r.c0;
+            v.c1 = l.c1 - r.c1;
+            v.c2 = l.c2 - r.c2;
             return v;
         }
 
         public static Vector3 operator -(Vector3 r)
         {
             var v = new Vector3();
-            v.c[0] =  - r.c[0];
-            v.c[1] =  - r.c[1];
-            v.c[2] =  - r.c[2];
+            v.c0 =  - r.c0;
+            v.c1 =  - r.c1;
+            v.c2 =  - r.c2;
             return v;
         }
 
         public static double operator *(Vector3 l, Vector3 r)
         {
-            return l.c[0] * r.c[0] + l.c[1] * r.c[1] + l.c[2] * r.c[2];
+            return l.c0 * r.c0 + l.c1 * r.c1 + l.c2 * r.c2;
         }
 
         public static Vector3 operator *(double l, Vector3 r)
         {
             var v = new Vector3();
-            v.c[0] = l * r.c[0];
-            v.c[1] = l * r.c[1];
-            v.c[2] = l * r.c[2];
+            v.c0 = l * r.c0;
+            v.c1 = l * r.c1;
+            v.c2 = l * r.c2;
             return v;
         }
 
         public static Vector3 operator *(Vector3 l, double r )
         {
             var v = new Vector3();
-            v.c[0] = l.c[0] * r;
-            v.c[1] = l.c[1] * r;
-            v.c[2] = l.c[2] * r;
+            v.c0 = l.c0 * r;
+            v.c1 = l.c1 * r;
+            v.c2 = l.c2 * r;
             return v;
         }
 
         public static Vector3 operator / (Vector3 l, double r)
         {
             var v = new Vector3();
-            v.c[0] = l.c[0] / r;
-            v.c[1] = l.c[1] / r;
-            v.c[2] = l.c[2] / r;
+            v.c0 = l.c0 / r;
+            v.c1 = l.c1 / r;
+            v.c2 = l.c2 / r;
             return v;
         }
 
         public double euklid_Norm()
         {
-            return Math.Sqrt(c[0]*c[0]+c[1]*c[1]+c[2]*c[2]);
+            return Math.Sqrt(c0*c0+c1*c1+c2*c2);
         }
 
         public Vector3 unit()
         {
             double n = euklid_Norm();
             var v = new Vector3();
-            v.c[0] = c[0] / n;
-            v.c[1] = c[1] / n;
-            v.c[2] = c[2] / n;
+            v.c0 = c0 / n;
+            v.c1 = c1 / n;
+            v.c2 = c2 / n;
             return v;
         }
 
@@ -113,10 +129,9 @@ namespace NBodyLib
             var sb = new StringBuilder();
             sb.Append(base.ToString());
             sb.Append(":");
-            foreach (var d in c)
-            {
-                sb.AppendFormat(" {0}", d);
-            }
+            sb.AppendFormat(" {0}", c0);
+            sb.AppendFormat(" {0}", c1);
+            sb.AppendFormat(" {0}", c2);
             return sb.ToString();
         }
 
@@ -125,14 +140,15 @@ namespace NBodyLib
             if (null == obj) return false;
             if (GetType() != obj.GetType()) return false;
             Vector3 o = obj as Vector3;
-            return c[0] == o.c[0] && c[1] == o.c[1] && c[2] == o.c[2];
+            return c0 == o.c0 && c1 == o.c1 && c2 == o.c2;
         }
 
         public override int GetHashCode()
         {
             var hash = base.GetHashCode();
-            if (null != c)
-                hash ^= c.GetHashCode();
+            hash ^= c0.GetHashCode();
+            hash ^= c1.GetHashCode();
+            hash ^= c2.GetHashCode();
             return hash;
         }
 
