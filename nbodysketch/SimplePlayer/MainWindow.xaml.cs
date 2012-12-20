@@ -91,11 +91,6 @@ namespace SimplePlayer
 
         DispatcherTimer timer;
 
-        protected override void OnGotFocus(RoutedEventArgs e)
-        {
-            base.OnGotFocus(e);
-        }
-
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
@@ -154,15 +149,14 @@ namespace SimplePlayer
         double EtotStart;
         private void ReadStates()
         {
-            //var fileName = @"C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\nbodysketch\bin\Debug\data.xml";
-            string fileName = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "data.xml");
+            UnitedStates = new List<EulerState>();
+            string fileName = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "data.txt");
             Console.WriteLine("Reading from \"{0}\"", fileName);
-
-            var XmlDeserializer = new XmlSerializer(typeof(List<EulerState>));
-
             using (var file = new System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (var reader = new StreamReader(file, true))
             {
-                UnitedStates = (List<EulerState>)XmlDeserializer.Deserialize(file);
+                while(!reader.EndOfStream)
+                    UnitedStates.Add( new EulerState(reader) );
             }
             EtotStart = UnitedStates[0].Etot();
         }

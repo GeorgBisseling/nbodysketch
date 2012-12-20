@@ -4,11 +4,11 @@ clusters as presented here:
 http://www.artcompsci.org/kali/
 
 As of this writing these integrators are implemented:
-Forward Euler
-Leapfrog
-Runge Kutta 2nd and 4. order
-Haruo Yoshida, 6. and 8. order
-Multistep (2. order predictor corrector, 4. order, 6. order, 8. order)
+Forward Euler,
+Leapfrog,
+Runge Kutta (2. and 4. order),
+Haruo Yoshida (6. and 8. order),
+Multistep (2. order, 4. order, 4. order predictor corrector, 6. order, 8. order).
 
 Plan is to suggest this project as a tutorial series for interested
 programmer-wanna-bees.

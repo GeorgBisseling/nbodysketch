@@ -105,6 +105,26 @@ namespace NBodyLib
             return accVector;
         }
 
+        public static void Serialize(this INBodyState s, double? ekin, double? epot, StringBuilder sb)
+        {
+            sb.AppendLine(s.t.ToString() + " # t");
+            sb.AppendLine(s.N.ToString() + " # N");
+            sb.AppendLine(s.G.ToString() + " # G");
+            sb.AppendLine(s.eps.ToString() + " # eps");
+            ekin = ekin ?? s.Ekin();
+            epot = epot ?? s.Epot();
+            sb.AppendLine(ekin.ToString() + " # Ekin");
+            sb.AppendLine(epot.ToString() + " # Epot");
+            foreach (var m in s.m)
+                sb.AppendLine(m.ToString());
+            foreach (var r in s.r)
+                sb.AppendLine(r.ToString());
+            foreach (var v in s.v)
+                sb.AppendLine(v.ToString());
+        }
+
+
+
         static public double Etot(this INBodyState state)
         {
             double ekin = Ekin(state);

@@ -126,13 +126,7 @@ namespace NBodyLib
 
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            sb.Append(base.ToString());
-            sb.Append(":");
-            sb.AppendFormat(" {0}", c0);
-            sb.AppendFormat(" {0}", c1);
-            sb.AppendFormat(" {0}", c2);
-            return sb.ToString();
+            return string.Format("{0} {1} {2}", c0, c1, c2);
         }
 
         public override bool Equals(object obj)

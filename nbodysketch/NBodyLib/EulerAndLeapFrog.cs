@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Diagnostics;
 using System.Xml.Serialization;
@@ -60,6 +61,47 @@ namespace NBodyLib
             {
                 position.Add( new Vector3(other.r[i]) );
                 velocity.Add( new Vector3(other.v[i]) );
+            }
+        }
+
+        private string read(StreamReader sr)
+        {
+            var rawLine = sr.ReadLine();
+            var chunks = rawLine.Split('#');
+            var cleanChunk = chunks[0].Trim();
+            return cleanChunk;
+        }
+
+        public EulerState(StreamReader sr)
+        {
+            string line;
+            line = read(sr); currentTime = Double.Parse(line);
+            line = read(sr); N = Int32.Parse(line);
+            line = read(sr); G = Double.Parse(line);
+            line = read(sr); eps = Double.Parse(line);
+            line = read(sr); var ekin = Double.Parse(line);
+            line = read(sr); var epot = Double.Parse(line);
+
+
+            mass = new List<double>(N);
+            position = new List<Vector3>(N);
+            velocity = new List<Vector3>(N);
+
+            for (int i = 0; i < N; i++)
+            {
+                line = read(sr); mass.Add( Double.Parse(line) );
+            }
+            for (int i = 0; i < N; i++)
+            {
+                line = read(sr);
+                var components = line.Split(' ', '\t');
+                position.Add( new Vector3(Double.Parse(components[0]), Double.Parse(components[1]), Double.Parse(components[2])) );
+            }
+            for (int i = 0; i < N; i++)
+            {
+                line = read(sr);
+                var components = line.Split(' ', '\t');
+                velocity.Add( new Vector3(Double.Parse(components[0]), Double.Parse(components[1]), Double.Parse(components[2])) );
             }
         }
 

@@ -41,7 +41,7 @@ namespace nbodysketch
 
 
 
-            // StartUp_Ring(N, startState);
+            StartUp_Ring(N, startState);
 
             //StartUp_TwoOnCircle(startState);
 
@@ -49,7 +49,6 @@ namespace nbodysketch
 
             //StartUp_ColdCollapse8(startState);
 
-            StartUp_Ring(N, startState);
 
             //INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
             //INBodyIntegrator integrator = new RungeKuttaIntegrator(startState, RungeKuttaIntegrator.Flavor.rk4);
@@ -69,40 +68,55 @@ namespace nbodysketch
 
             int count = 0;
 
-            var UnitedStates = new List<EulerState>();
-            UnitedStates.Add(new EulerState(startState));
+            string stateFileName = Path.Combine(Path.GetTempPath(), "data.txt");
+            Console.Error.WriteLine("Storing to \"{0}\"", stateFileName);
+
+            const int printModulus = 50;
+            const int saveModulus = 10;
 
             var timeProgress = new Stopwatch();
             var beginTime = DateTime.Now;
 
             try
             {
-
-                while (!cancelled && integrator.currentTMax < 200.0)
+                using (var stateFile = new System.IO.FileStream(stateFileName, FileMode.Create, FileAccess.Write))
+                using (var stateWriter = new StreamWriter(stateFile, Encoding.UTF8))
                 {
-                    oldTime = integrator.currentTMax;
-
-                    timeProgress.Start();
-                    integrator.Progress(delta);
-                    timeProgress.Stop();
-
-                    newTime = integrator.currentTMax;
-                    newState = integrator.currentState(newTime);
-
-                    if (0 == count % 10)
+                    stateWriter.AutoFlush = true;
+                    
+                    
+                    while (!cancelled && integrator.currentTMax < 240.0)
                     {
-                        var saveState = new EulerState(newState);
-                        UnitedStates.Add(saveState);
-                    }
+                        oldTime = integrator.currentTMax;
 
-                    if (0 == (count % 50))
-                    {
-                        ekin = newState.Ekin();
-                        epot = newState.Epot();
-                        etot = ekin + epot;
-                        Console.WriteLine("t:{0} Ekin:{1} Epot:{2} Etot:{3} Ediff:{4}", newTime, ekin, epot, etot, etot - etot_start);
+                        timeProgress.Start();
+                        integrator.Progress(delta);
+                        timeProgress.Stop();
+
+                        newTime = integrator.currentTMax;
+                        newState = integrator.currentState(newTime);
+
+                        if (0 == (count % saveModulus) || 0 == (count % printModulus))
+                        {
+                            ekin = newState.Ekin();
+                            epot = newState.Epot();
+                            etot = ekin + epot;
+
+                            if (0 == (count % printModulus))
+                            {
+                                Console.WriteLine("t:{0} Ekin:{1} Epot:{2} Etot:{3} Ediff:{4}", newTime, ekin, epot, etot, etot - etot_start);
+                            }
+
+                            if (0 == count % saveModulus)
+                            {
+                                var sb = new StringBuilder();
+                                newState.Serialize(ekin, epot, sb);
+                                stateWriter.Write(sb.ToString());
+                            }
+                        }
+
+                        count++;
                     }
-                    count++;
                 }
 
                 var endTime = DateTime.Now;
@@ -119,13 +133,6 @@ namespace nbodysketch
             }
             finally
             {
-                string stateFileName = Path.Combine(Path.GetTempPath(), "data.xml");
-                Console.Error.WriteLine("Storing to \"{0}\"", stateFileName);
-                var stateSerializer = new XmlSerializer(UnitedStates.GetType());
-                using (var stateFile = new System.IO.FileStream(stateFileName, FileMode.Create, FileAccess.Write))
-                {
-                    stateSerializer.Serialize(stateFile, UnitedStates);
-                }
             }
 
             if (null != caught)
@@ -159,6 +166,9 @@ namespace nbodysketch
 
         private static void StartUp_TwoOnCircle(EulerState startState)
         {
+            if (2 != startState.N)
+                throw new ArgumentOutOfRangeException("Need two bodies here.");
+
             // two in a circle
             startState.position[0][0] = -1.0;
             startState.velocity[0][1] = -0.5;
@@ -169,6 +179,8 @@ namespace nbodysketch
 
         private static void StartUp_ThreeOnEight(EulerState startState)
         {
+            if (3 != startState.N)
+                throw new ArgumentOutOfRangeException("Need three bodies here.");
             // three in an eight
             startState.position[0] = new Vector3(0.9700436, -0.24308753);
             startState.velocity[0] = new Vector3(0.466203685, 0.43236573);
@@ -182,6 +194,8 @@ namespace nbodysketch
 
         private static void StartUp_ColdCollapse8(EulerState startState)
         {
+            if (8 != startState.N)
+                throw new ArgumentOutOfRangeException("Need eight bodies here.");
             for (int i = 0; i < 8; i++)
             {
                 double x = (i & 1) * 1.0;
