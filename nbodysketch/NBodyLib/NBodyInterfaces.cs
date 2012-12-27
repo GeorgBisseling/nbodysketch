@@ -21,66 +21,37 @@ namespace NBodyLib
 
     public static class INBodyStateExtensions
     {
+
         static public Vector3 A_onFirstFromSecond(this INBodyState s, int first, int second)
         {
-            var RDiff = s.r[second] - s.r[first];
+          
+            var r1 = s.r[first];
+            var r2 = s.r[second];
 
-            double R2 = RDiff * RDiff;
+            var Rdiff = r2 - r1;
+
+            double R2 = Rdiff * Rdiff;
             double R = Math.Sqrt(R2);
-            double eps2 = s.eps * s.eps;
+            var eps = s.eps;
+            double eps2 = eps * eps;
 
-            double factor = s.m[second] * s.G / (R * (R2 + s.eps*s.eps) );
+            double factor = s.m[second] * s.G / (R * (R2 + eps*eps) );
 
-            RDiff.c0 *= factor;
-            RDiff.c1 *= factor;
-            RDiff.c2 *= factor;
-
-            return RDiff;
+            Rdiff *= factor;
+            return Rdiff;
         }
 
         static public Vector3 A_onFirstFromAll(this INBodyState s, int first)
         {
             var N = s.N;
 
+            var tmp = new Vector3();
+
             Vector3 acc = s.A_onFirstFromSecond(first, 0);
 
             for (int i = 1; i < N; i++) acc += s.A_onFirstFromSecond(first, i);
 
             return acc;
-        }
-
-        static public Vector3[,] ComputeAccelerationMatrix(this INBodyState s)
-        {
-            var N = s.N;
-            var acc = new Vector3[N, N];
-
-            // compute accelerations
-            for (int i = 0; i < N; i++)
-                for (int j = 0; j < N; j++)
-                    if (j != i)
-                    {
-                        var a = s.A_onFirstFromSecond(i, j);
-                        acc[i, j] = a;
-                    }
-                    else
-                    {
-                        acc[i, j] = new Vector3();
-                    }
-            return acc;
-        }
-
-        public static Vector3[] ComputeAccelerationVectorFromMatrix(this INBodyState s, Vector3[,] accMatrix)
-        {
-            var N = s.N;
-            var accVector = new Vector3[N];
-            for (int i = 0; i < N; i++)
-            {
-                Vector3 sumV = new Vector3();
-                for (int j = 0; j < N; j++)
-                    sumV += accMatrix[i, j];
-                accVector[i] = sumV;
-            }
-            return accVector;
         }
 
         public static Vector3[] ComputeAccelerationVectorDirect(this INBodyState s)
@@ -92,13 +63,14 @@ namespace NBodyLib
             Parallel.For(0, N, i =>
             {
                 accVector[i] = new Vector3();
+                var avi = accVector[i];
                 for (int j = 0; j < N; j++)
                     if (j != i)
                     {
                         var a = s.A_onFirstFromSecond(i, j);
-                        accVector[i].c0 += a.c0;
-                        accVector[i].c1 += a.c1;
-                        accVector[i].c2 += a.c2;
+                        avi.c0 += a.c0;
+                        avi.c1 += a.c1;
+                        avi.c2 += a.c2;
                     }
             });
             
@@ -157,12 +129,17 @@ namespace NBodyLib
             Parallel.For(0, N, i =>
             // for (int i = 0; i < N; i++)
             {
+                var RDiff = new Vector3();
                 var ri = state.r[i];
                 var mi = state.m[i];
                 for (int j = 0; j < N; j++)
                     if (j != i)
                     {
-                        var RDiff = (state.r[j] - ri);
+                        var rj = state.r[j];
+                        //var RDiff = (state.r[j] - ri);
+                        RDiff.c0 = rj.c0 - ri.c0;
+                        RDiff.c1 = rj.c1 - ri.c1;
+                        RDiff.c2 = rj.c2 - ri.c2;
                         var R2 = RDiff * RDiff;
                         epot += mi * state.m[j] / Math.Sqrt(R2 + eps2);
                     }

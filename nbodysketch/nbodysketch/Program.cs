@@ -50,9 +50,9 @@ namespace nbodysketch
             //StartUp_ColdCollapse8(startState);
 
 
-            //INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
+            INBodyIntegrator integrator = new LeapFrogIntegrator(startState);
             //INBodyIntegrator integrator = new RungeKuttaIntegrator(startState, RungeKuttaIntegrator.Flavor.rk4);
-            INBodyIntegrator integrator = new MultiStepIntegrator(startState, MultiStepIntegrator.Flavor.ms8);
+            //INBodyIntegrator integrator = new MultiStepIntegrator(startState, MultiStepIntegrator.Flavor.ms8);
 
             const double delta = 0.001;
             double oldTime;
@@ -79,13 +79,13 @@ namespace nbodysketch
 
             try
             {
-                using (var stateFile = new System.IO.FileStream(stateFileName, FileMode.Create, FileAccess.Write))
+                using (var stateFile = new System.IO.FileStream(stateFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
                 using (var stateWriter = new StreamWriter(stateFile, Encoding.UTF8))
                 {
                     stateWriter.AutoFlush = true;
                     
                     
-                    while (!cancelled && integrator.currentTMax < 240.0)
+                    while (!cancelled && integrator.currentTMax < 480.0)
                     {
                         oldTime = integrator.currentTMax;
 

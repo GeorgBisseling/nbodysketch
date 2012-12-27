@@ -56,7 +56,7 @@ namespace NBodyLib
             var N = state.N;
             var old_pos = state.position.Select(p => new Vector3(p)).ToList();
 
-            var a0 = state.ComputeAccelerationVectorDirect();
+            var a0 = state.EulerState_ComputeAccelerationVectorDirect();
 
             var half_vel = new Vector3[N];
 
@@ -67,7 +67,7 @@ namespace NBodyLib
                 state.position[i] += state.velocity[i] * 0.5 * dt;
             });
 
-            var a1 = state.ComputeAccelerationVectorDirect();
+            var a1 = state.EulerState_ComputeAccelerationVectorDirect();
 
             Parallel.For(0, N, i =>
             //for (int i = 0; i < N; i++)
@@ -87,7 +87,7 @@ namespace NBodyLib
             var N = state.N;
             var old_pos = state.position.AsParallel().Select(oldpos => new Vector3(oldpos)).ToList();
 
-            var a0 = state.ComputeAccelerationVectorDirect();
+            var a0 = state.EulerState_ComputeAccelerationVectorDirect();
 
             Parallel.For(0, N, po, i =>
             //for (int i = 0; i < N; i++)
@@ -97,7 +97,7 @@ namespace NBodyLib
                     + a0[i] * 0.125 * dt * dt;
             });
 
-            var a1 = state.ComputeAccelerationVectorDirect();
+            var a1 = state.EulerState_ComputeAccelerationVectorDirect();
 
             Parallel.For(0, N, po, i =>
             //for (int i = 0; i < N; i++)
@@ -107,7 +107,7 @@ namespace NBodyLib
                     + a0[i] * 0.5 * dt * dt;
             });
 
-            var a2 = state.ComputeAccelerationVectorDirect();
+            var a2 = state.EulerState_ComputeAccelerationVectorDirect();
 
             Parallel.For(0, N, po, i =>
             //for (int i = 0; i < N; i++)

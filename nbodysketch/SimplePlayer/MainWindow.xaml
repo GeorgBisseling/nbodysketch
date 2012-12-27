@@ -6,11 +6,11 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Canvas Name="Universe"  Grid.Row="0"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ClipToBounds="True" >
-        </Canvas>
-        <Label Name="Controls" Grid.Row="1">TBD</Label>
-
+        <Canvas Name="Universe"  Grid.Row="0"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ClipToBounds="True" />
+        <Label Name="Label" Grid.Row="1">TBD</Label>
+        <CheckBox Name="PlayButton" Grid.Row="2" Click="PlayButton_Click" IsChecked="False">Play</CheckBox>
     </Grid>
 </Window>

@@ -81,9 +81,9 @@ namespace SimplePlayer
                 dot.SetValue(Canvas.TopProperty, doty - dot.Height / 2.0);
 
                 Universe.Children.Add(dot);
-                line.Points.Add(new Point(dotX, doty));
-                if (line.Points.Count > 100) line.Points.RemoveAt(0);
-                Universe.Children.Add(line);
+                //line.Points.Add(new Point(dotX, doty));
+                //if (line.Points.Count > 100) line.Points.RemoveAt(0);
+                //Universe.Children.Add(line);
             }
 
 
@@ -96,21 +96,35 @@ namespace SimplePlayer
             base.OnActivated(e);
             if (null == timer)
             {
-                timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1.0), DispatcherPriority.Render, UpdateCanvas, this.Dispatcher);
-                timer.Start();
+                timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1), DispatcherPriority.Render , UpdateCanvas, this.Dispatcher);
+
+                if (null != PlayButton && PlayButton.IsChecked == true)
+                    timer.Start();
+                else
+                    timer.Stop();
             }
         }
 
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
-            ReadStates();
+            try
+            {
+                ReadStates();
+            }
+            catch (Exception exc)
+            {
+                Label.Content = exc.ToString();
+            }
 
         }
 
         private void UpdateCanvas(object sender, EventArgs e)
         {
             Universe.Children.Clear();
+
+            if (0 == UnitedStates.Count)
+                return;
 
             int effectiveIndex = currentState % UnitedStates.Count;
 
@@ -131,19 +145,13 @@ namespace SimplePlayer
                 energyLine.StrokeThickness = 1;
 
                 currentState = currentState % UnitedStates.Count;
-                
-            }
-            else
-            {
-                //foreach (var c in Universe.Children)
-                //    (c as Shape).Fill = Brushes.LightGray;
             }
 
             var state = UnitedStates[effectiveIndex];
             var Ediff = (state.Etot() - EtotStart);
             AddStateToCanvas(effectiveIndex, Ediff);
             currentState += currentIncrement;
-            Controls.Content = effectiveIndex.ToString() + " " + state.currentTime + " Ediff = " + Ediff.ToString();
+            Label.Content = effectiveIndex.ToString() + " " + state.currentTime + " Ediff = " + Ediff.ToString();
         }
 
         double EtotStart;
@@ -152,13 +160,30 @@ namespace SimplePlayer
             UnitedStates = new List<EulerState>();
             string fileName = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "data.txt");
             Console.WriteLine("Reading from \"{0}\"", fileName);
-            using (var file = new System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (var file = new System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (var reader = new StreamReader(file, true))
             {
-                while(!reader.EndOfStream)
-                    UnitedStates.Add( new EulerState(reader) );
+                while (!reader.EndOfStream /* && UnitedStates.Count < 1000 */ )
+                {
+                    try
+                    {
+                        UnitedStates.Add(new EulerState(reader));
+                    }
+                    catch (Exception exc)
+                    {
+                        Label.Content = exc.ToString();
+                        PlayButton.IsChecked = false;
+                    }
+                }
             }
             EtotStart = UnitedStates[0].Etot();
+        }
+
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (timer != null && PlayButton != null) {
+                timer.IsEnabled = (PlayButton.IsChecked ?? false);
+            }
         }
 
     }

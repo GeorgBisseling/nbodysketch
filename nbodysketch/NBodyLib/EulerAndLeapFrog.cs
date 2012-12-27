@@ -130,6 +130,55 @@ namespace NBodyLib
         {
             get { return velocity; }
         }
+
+
+        public Vector3 EulerState_A_onFirstFromSecond(int first, int second, Vector3 rdiff_tmp)
+        {
+
+            var r1 = position[first];
+            var r2 = position[second];
+
+            rdiff_tmp.c0 = r2.c0 - r1.c0;
+            rdiff_tmp.c1 = r2.c1 - r1.c1;
+            rdiff_tmp.c2 = r2.c2 - r1.c2;
+
+            double R2 = rdiff_tmp * rdiff_tmp;
+            double R = Math.Sqrt(R2);
+            double eps2 = eps * eps;
+
+            double factor = mass[second] * G / (R * (R2 + eps * eps));
+
+            rdiff_tmp.c0 *= factor;
+            rdiff_tmp.c1 *= factor;
+            rdiff_tmp.c2 *= factor;
+
+            return rdiff_tmp;
+        }
+
+        public Vector3[] EulerState_ComputeAccelerationVectorDirect()
+        {
+            var accVector = new Vector3[N];
+
+            // compute accelerations
+            Parallel.For(0, N, i =>
+            {
+                var tmp = new Vector3();
+                accVector[i] = new Vector3();
+                var avi = accVector[i];
+                for (int j = 0; j < N; j++)
+                    if (j != i)
+                    {
+                        var a = this.EulerState_A_onFirstFromSecond(i, j, tmp);
+                        avi.c0 += a.c0;
+                        avi.c1 += a.c1;
+                        avi.c2 += a.c2;
+                    }
+            });
+
+            return accVector;
+        }
+
+
     }
 
     
@@ -163,7 +212,7 @@ namespace NBodyLib
         {
             var N = state.N;
 
-            var acceleration = state.ComputeAccelerationVectorDirect();
+            var acceleration = state.EulerState_ComputeAccelerationVectorDirect();
 
             for (int i = 0; i < N; i++)
             {
@@ -250,7 +299,7 @@ namespace NBodyLib
             if (lfState.currentTime == lfState.m_timeOfAccelerationCalculated && lfState.m_accelerations != null) // && length matches, in case we merge or split particles
                 acceleration1 = lfState.m_accelerations;
             else
-                acceleration1 = lfState.ComputeAccelerationVectorDirect();
+                acceleration1 = lfState.EulerState_ComputeAccelerationVectorDirect();
 
             Parallel.For(0, N, i =>
             //for (int i = 0; i < N; i++)
@@ -259,7 +308,7 @@ namespace NBodyLib
                 lfState.position[i] += lfState.velocity[i] * dt;
             });
 
-            var acceleration2 = lfState.ComputeAccelerationVectorDirect();
+            var acceleration2 = lfState.EulerState_ComputeAccelerationVectorDirect();
 
             Parallel.For(0, N, i =>
             //for (int i = 0; i < N; i++)

@@ -94,50 +94,50 @@ namespace NBodyLib
             if (!state.memory.ContainsKey("ap7"))
             {
                 state.memory["ap7"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo8(state, dt);
             }
             else if (!state.memory.ContainsKey("ap6"))
             {
                 state.memory["ap6"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo8(state, dt);
             }
             else if (!state.memory.ContainsKey("ap5"))
             {
                 state.memory["ap5"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo8(state, dt);
             }
             else if (!state.memory.ContainsKey("ap4"))
             {
                 state.memory["ap4"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo8(state, dt);
             }
             else if (!state.memory.ContainsKey("ap3"))
             {
                 state.memory["ap3"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo8(state, dt);
             }
             else if (!state.memory.ContainsKey("ap2"))
             {
                 state.memory["ap2"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo8(state, dt);
             }
             else if (!state.memory.ContainsKey("ap1"))
             {
                 state.memory["ap1"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo8(state, dt);
             }
             else
             {
                 var N = state.N;
 
-                var ap0 = state.ComputeAccelerationVectorDirect();
+                var ap0 = state.EulerState_ComputeAccelerationVectorDirect();
                 Vector3[] ap1 = (Vector3[])state.memory["ap1"];
                 Vector3[] ap2 = (Vector3[])state.memory["ap2"];
                 Vector3[] ap3 = (Vector3[])state.memory["ap3"];
@@ -183,38 +183,38 @@ namespace NBodyLib
             if (!state.memory.ContainsKey("ap5"))
             {
                 state.memory["ap5"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo6(state, dt);
             }
             else if (!state.memory.ContainsKey("ap4"))
             {
                 state.memory["ap4"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo6(state, dt);
             }
             else if (!state.memory.ContainsKey("ap3"))
             {
                 state.memory["ap3"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo6(state, dt);
             }
             else if (!state.memory.ContainsKey("ap2"))
             {
                 state.memory["ap2"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo6(state, dt);
             }
             else if (!state.memory.ContainsKey("ap1"))
             {
                 state.memory["ap1"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_yo6(state, dt);
             }
             else
             {
                 var N = state.N;
 
-                var ap0 = state.ComputeAccelerationVectorDirect();
+                var ap0 = state.EulerState_ComputeAccelerationVectorDirect();
                 Vector3[] ap1 = (Vector3[])state.memory["ap1"];
                 Vector3[] ap2 = (Vector3[])state.memory["ap2"];
                 Vector3[] ap3 = (Vector3[])state.memory["ap3"];
@@ -252,26 +252,26 @@ namespace NBodyLib
             if (!state.memory.ContainsKey("ap3"))
             {
                 state.memory["ap3"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_rk4(state, dt);
             }
             else if (!state.memory.ContainsKey("ap2"))
             {
                 state.memory["ap2"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_rk4(state, dt);
             }
             else if (!state.memory.ContainsKey("ap1"))
             {
                 state.memory["ap1"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_rk4(state, dt);
             }
             else
             {
                 var N = state.N;
 
-                var ap0 = state.ComputeAccelerationVectorDirect();
+                var ap0 = state.EulerState_ComputeAccelerationVectorDirect();
                 Vector3[] ap1 = (Vector3[])state.memory["ap1"];
                 Vector3[] ap2 = (Vector3[])state.memory["ap2"];
                 Vector3[] ap3 = (Vector3[])state.memory["ap3"];
@@ -292,7 +292,7 @@ namespace NBodyLib
                 state.memory["ap3"] = ap3 = ap2;
                 state.memory["ap2"] = ap2 = ap1;
                 state.memory["ap1"] = ap1 = ap0;
-                ap0 = state.ComputeAccelerationVectorDirect();
+                ap0 = state.EulerState_ComputeAccelerationVectorDirect();
                 Parallel.For(0, N, i =>
                 //for (int i = 0; i < N; i++)
                 {
@@ -313,26 +313,26 @@ namespace NBodyLib
             if (!state.memory.ContainsKey("ap3"))
             {
                 state.memory["ap3"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_rk4(state, dt);
             }
             else if (!state.memory.ContainsKey("ap2"))
             {
                 state.memory["ap2"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_rk4(state, dt);
             }
             else if (!state.memory.ContainsKey("ap1"))
             {
                 state.memory["ap1"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
                 RungeKuttaIntegrator.Progress_rk4(state, dt);
             }
             else
             {
                 var N = state.N;
 
-                var ap0 = state.ComputeAccelerationVectorDirect();
+                var ap0 = state.EulerState_ComputeAccelerationVectorDirect();
                 Vector3[] ap1 = (Vector3[])state.memory["ap1"];
                 Vector3[] ap2 = (Vector3[])state.memory["ap2"];
                 Vector3[] ap3 = (Vector3[])state.memory["ap3"];
@@ -365,12 +365,12 @@ namespace NBodyLib
             {
                 RungeKuttaIntegrator.Progress_rk2(new LeapFrogState(state), dt);
                 state.memory["prev_acc"] = (Vector3[])
-                    state.ComputeAccelerationVectorDirect();
+                    state.EulerState_ComputeAccelerationVectorDirect();
             }
             else
             {
                 var prev_acc = (Vector3[]) state.memory["prev_acc"];
-                Vector3[] old_acc = state.ComputeAccelerationVectorDirect();
+                Vector3[] old_acc = state.EulerState_ComputeAccelerationVectorDirect();
 
                 var jdt = new Vector3[N];
                 Parallel.For(0, N, i =>
