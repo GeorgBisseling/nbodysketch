@@ -1,0 +1,4 @@
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\VectorLib\bin\Debug\VectorLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\VectorLib\bin\Debug\VectorLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\VectorLib\obj\Debug\VectorLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\VectorLib\obj\Debug\VectorLib.pdb

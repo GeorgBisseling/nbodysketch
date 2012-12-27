@@ -77,6 +77,10 @@
       <Project>{db2dc663-448c-418c-baf0-affc2db13208}</Project>
       <Name>NBodyLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VectorLib\VectorLib.csproj">
+      <Project>{887e9482-c33b-4b8f-8335-62cb9989431a}</Project>
+      <Name>VectorLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

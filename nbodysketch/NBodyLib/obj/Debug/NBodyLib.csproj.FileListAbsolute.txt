@@ -2,10 +2,14 @@ C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\bin\De
 C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\bin\Debug\NBodyLib.pdb
 C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\obj\Debug\NBodyLib.dll
 C:\Users\georg\Documents\Visual Studio 2012\Projects\nbodysketch\NBodyLib\obj\Debug\NBodyLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Debug\NBodyLib.csprojResolveAssemblyReference.cache
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\NBodyLib.dll
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\NBodyLib.pdb
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Debug\NBodyLib.dll
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Debug\NBodyLib.pdb
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\NBodyLib.dll.CodeAnalysisLog.xml
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\NBodyLib.dll.lastcodeanalysissucceeded
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Debug\NBodyLib.csprojResolveAssemblyReference.cache
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\NBodyLibCPP.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\VectorLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\NBodyLibCPP.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\bin\Debug\VectorLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Debug\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\NBodyLib\obj\Debug\NBodyLib.pdb

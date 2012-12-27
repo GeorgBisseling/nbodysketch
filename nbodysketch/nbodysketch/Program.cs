@@ -9,7 +9,7 @@ using System.Xml;
 using System.Xml.Serialization;
 
 using NBodyLib;
-
+using VectorLib;
 
 namespace nbodysketch
 {

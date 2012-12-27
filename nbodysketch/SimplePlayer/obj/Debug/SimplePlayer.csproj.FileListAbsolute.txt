@@ -6,10 +6,3 @@ C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\S
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Debug\SimplePlayer.g.resources
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Debug\SimplePlayer.Properties.Resources.resources
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Debug\SimplePlayer.csproj.GenerateResource.Cache
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Debug\SimplePlayer.exe.config
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Debug\SimplePlayer.exe
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Debug\SimplePlayer.pdb
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Debug\NBodyLib.dll
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Debug\NBodyLib.pdb
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Debug\SimplePlayer.exe
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Debug\SimplePlayer.pdb

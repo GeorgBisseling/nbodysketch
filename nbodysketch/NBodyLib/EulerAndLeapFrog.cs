@@ -7,6 +7,9 @@ using System.Diagnostics;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 
+using VectorLib;
+using NBodyLibCPP;
+
 namespace NBodyLib
 {
     public class EulerState : INBodyState
@@ -134,7 +137,6 @@ namespace NBodyLib
 
         public Vector3 EulerState_A_onFirstFromSecond(int first, int second, Vector3 rdiff_tmp)
         {
-
             var r1 = position[first];
             var r2 = position[second];
 
@@ -158,6 +160,9 @@ namespace NBodyLib
         public Vector3[] EulerState_ComputeAccelerationVectorDirect()
         {
             var accVector = new Vector3[N];
+            var localG = G;
+            var localEps = eps;
+            var eps2 = localEps * localEps;
 
             // compute accelerations
             Parallel.For(0, N, i =>
@@ -165,10 +170,12 @@ namespace NBodyLib
                 var tmp = new Vector3();
                 accVector[i] = new Vector3();
                 var avi = accVector[i];
+                var ri = position[i];
                 for (int j = 0; j < N; j++)
                     if (j != i)
                     {
-                        var a = this.EulerState_A_onFirstFromSecond(i, j, tmp);
+                        //var a = this.EulerState_A_onFirstFromSecond(i, j, tmp);
+                        var a = EulerStateBoost.EulerStateBoost_A_onFirstFromSecond(ri, position[j], mass[j], localG, eps2, tmp);
                         avi.c0 += a.c0;
                         avi.c1 += a.c1;
                         avi.c2 += a.c2;

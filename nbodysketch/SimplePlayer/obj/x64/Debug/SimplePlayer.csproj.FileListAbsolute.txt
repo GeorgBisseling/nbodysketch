@@ -13,3 +13,7 @@ C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\S
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Debug\SimplePlayer.csproj.GenerateResource.Cache
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Debug\SimplePlayer.exe
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\x64\Debug\SimplePlayer.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Debug\VectorLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Debug\NBodyLibCPP.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Debug\VectorLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\x64\Debug\NBodyLibCPP.pdb

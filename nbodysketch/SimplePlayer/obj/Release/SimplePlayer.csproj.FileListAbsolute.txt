@@ -1,8 +1,3 @@
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\SimplePlayer.exe.config
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\SimplePlayer.exe
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\SimplePlayer.pdb
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\NBodyLib.dll
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\NBodyLib.pdb
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Release\SimplePlayer.csprojResolveAssemblyReference.cache
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Release\MainWindow.baml
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Release\MainWindow.g.cs
@@ -11,5 +6,14 @@ C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\S
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Release\SimplePlayer.g.resources
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Release\SimplePlayer.Properties.Resources.resources
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Release\SimplePlayer.csproj.GenerateResource.Cache
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\SimplePlayer.exe.config
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\SimplePlayer.exe
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\SimplePlayer.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\NBodyLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\VectorLib.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\NBodyLibCPP.dll
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\NBodyLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\VectorLib.pdb
+C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\bin\Release\NBodyLibCPP.pdb
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Release\SimplePlayer.exe
 C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\SimplePlayer\obj\Release\SimplePlayer.pdb
