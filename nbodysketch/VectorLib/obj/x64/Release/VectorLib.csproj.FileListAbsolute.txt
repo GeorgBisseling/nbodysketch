@@ -1,4 +1,0 @@
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\VectorLib\bin\x64\Release\VectorLib.dll
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\VectorLib\bin\x64\Release\VectorLib.pdb
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\VectorLib\obj\x64\Release\VectorLib.dll
-C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\VectorLib\obj\x64\Release\VectorLib.pdb
