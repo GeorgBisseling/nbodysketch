@@ -6,7 +6,8 @@
 
 namespace NBodyLibCPP
 {
-		Vector3^ EulerStateBoost::EulerStateBoost_A_onFirstFromSecond( Vector3^ r1, Vector3^ r2, double m2, double G, double eps2, Vector3^ rdiff_tmp)
+	
+	Vector3^ EulerStateBoost::EulerStateBoost_A_onFirstFromSecond( Vector3^ r1, Vector3^ r2, double m2, double G, double eps2, Vector3^ rdiff_tmp)
         {
             rdiff_tmp->c0 = r2->c0 - r1->c0;
             rdiff_tmp->c1 = r2->c1 - r1->c1;

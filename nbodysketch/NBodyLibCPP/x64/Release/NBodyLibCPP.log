@@ -1,1 +1,6 @@
-﻿
+﻿  Stdafx.cpp
+  AssemblyInfo.cpp
+  NBodyLibCPP.cpp
+  Generating Code...
+  .NETFramework,Version=v4.5.AssemblyAttributes.cpp
+  NBodyLibCPP.vcxproj -> C:\Users\georg\Documents\Visual Studio 2012\GitHubMess\nbodysketch\nbodysketch\x64\Release\NBodyLibCPP.dll

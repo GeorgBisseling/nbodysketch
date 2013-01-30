@@ -85,7 +85,7 @@ namespace nbodysketch
                     stateWriter.AutoFlush = true;
                     
                     
-                    while (!cancelled && integrator.currentTMax < 480.0)
+                    while (!cancelled && integrator.currentTMax < 240.0)
                     {
                         oldTime = integrator.currentTMax;
 
